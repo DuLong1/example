@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"> <!-- bean definitions here -->
+	
+	
+	<!--读取数据库配置文件  -->
+	<context:property-placeholder location="classpath:jdbc.properties"/>
+	
+	<!--配置数据源 -->
+	<bean class="com.alibaba.druid.pool.DruidDataSource" id="dataSource">
+		<property name="driverClassName" value="${jdbc.driver}"></property>
+		<property name="url" value="${jdbc.url}"></property>
+		<property name="username" value="${jdbc.username}"></property>
+		<property name="password" value="${jdbc.pwd}"></property>
+	</bean>
+
+	<!--配置sqlsessionFactoryBean -->
+	<bean class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!--读取外部全局配置文件  -->
+		<property name="configLocation" value="classpath:sqlMapperConfig.xml"></property>
+		<!--别名 -->
+		<property name="typeAliasesPackage" value="com.adultexample.pojo"></property>
+		<!--数据库源 -->
+		<property name="dataSource" ref="dataSource"></property>
+		<!--分页插件 -->
+		<property name="plugins">
+			<array>
+				<bean class="com.github.pagehelper.PageHelper">
+					<property name="properties">
+						<!--使用下面的方式配置参数，一行配置一个 -->
+						<value>
+							dialect=mysql
+						</value>
+					</property>
+				</bean>
+			</array>
+		</property>
+	</bean>
+	<!--读取mapper文件  -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer" >
+		<property name="basePackage" value="com.adultexample.mapper"></property>
+	</bean>
+</beans>

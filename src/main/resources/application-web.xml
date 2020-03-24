@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+	<!--开启mvc注解驱动  可以使用最新的映射器 适配器  -->
+    <mvc:annotation-driven></mvc:annotation-driven>
+	<!-- 配置拦截器 --> 
+	 <mvc:interceptors>
+	 	<mvc:interceptor>
+	 		<mvc:mapping path="/**"/>
+	 		<mvc:exclude-mapping path="/manager/login.action"/>
+	 		<mvc:exclude-mapping path="/verification.action"/>
+	 		
+	 		<mvc:exclude-mapping path="/door/**"/>
+	 		<bean class="com.adultexample.interceptor.ExampleInteceptor"></bean>
+	 	</mvc:interceptor>
+	 </mvc:interceptors>
+	 
+	 
+	<!--全局异常处理器  -->
+	
+	<!--文件上传  对媒体视图解析器  -->
+	<bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver" >
+		<property name="maxInMemorySize" value="10000000"></property>
+		<property name="maxUploadSize" value="17367648787"/>
+	</bean>
+	
+	<!--修改默认视图解析器  -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+	<!--验证码 kaptcha  -->
+	 <bean id="captchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">
+        <property name="config">
+            <bean class="com.google.code.kaptcha.util.Config">
+                <constructor-arg>
+                    <props>
+                        <prop key="kaptcha.border">yes</prop>
+                        <prop key="kaptcha.border.color">105,179,90</prop>
+                        <prop key="kaptcha.textproducer.font.color">blue</prop>
+                        <prop key="kaptcha.image.width">116</prop>
+                        <prop key="kaptcha.image.height">36</prop>
+                        <prop key="kaptcha.textproducer.font.size">28</prop>
+                        
+                        
+                        <prop key="kaptcha.textproducer.char.length">4</prop>
+                        <prop key="kaptcha.textproducer.font.names">宋体,楷体,微软雅黑</prop>
+                    </props>
+                </constructor-arg>
+            </bean>
+        </property>
+    </bean>
+	
+</beans>
