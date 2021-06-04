@@ -11,7 +11,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<http.version>4.3.1</http.version>
+		<http.version>4.5.13</http.version>
 	</properties>
 	<dependencies>
 		<dependency>
